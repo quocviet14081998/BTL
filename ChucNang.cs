@@ -120,8 +120,6 @@ namespace DemoQLNhanVien_BTL_
         public void Del(int row,DataTable daT)
         {
             daT.Rows[row].Delete();
-            Update(daT);
-
         }
     }
 }

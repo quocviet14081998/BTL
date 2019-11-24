@@ -6,11 +6,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Data;
 using System.Data.SqlClient;
 using DemoQLNhanVien_BTL_;
+using System.Windows.Forms;
+
 namespace UnitTestProject1
 {
     [TestClass]
     public class UnitTest1
     {
+       
         private DataProvider daP;
         private ChucNang cn;
         private DataSet ds;
@@ -20,7 +23,7 @@ namespace UnitTestProject1
         {
             daP = new DataProvider();
             cn = new ChucNang();
-            ds = cn.GetData();
+            ds = cn.GetData(); 
         }
         [TestMethod]
         public void TestLoginGiamDoc()
@@ -29,7 +32,7 @@ namespace UnitTestProject1
             bool expected = true;
             bool actual = true;
             string user = "Admin";
-            string pass = "GiamDoc";
+            string pass = "admin@123";
             if (daP.Login(user, pass) == true)
             {
                 actual = true;
@@ -44,7 +47,7 @@ namespace UnitTestProject1
             bool expected = true;
             bool actual = true;
             string user = "Client";
-            string pass = "QuanLy";
+            string pass = "client@123";
             if (daP.Login(user, pass) == true)
             {
                 actual = true;
@@ -103,13 +106,32 @@ namespace UnitTestProject1
             Assert.AreEqual(expected, actual);
         }
         [TestMethod]
+        public void TestLoginFail()
+        {
+            SetUp();
+            bool expected = false;
+            string user = "asn";
+            string pass = "sajhj";
+            bool actual = true;
+            if (daP.Login(user, pass) == false)
+            {
+                actual = false;
+
+            }
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void TestThem()
         {
             SetUp();
-            DataTable daTt = ds.Tables[0];
-            Assert.AreEqual(0, daTt.Rows.Count);
-            cn.Them(daTt, "123", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");
-            Assert.AreEqual(1, daTt.Rows.Count);
+            DataTable daTs = ds.Tables[0];
+            Assert.AreEqual(0, daTs.Rows.Count);
+            cn.Them(daTs, "123", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "1234178", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123421", "Nguyen Van B", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123452", "Nguyen Van C", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "12345634", "Nguyen Van D", "31 NK", "0123465789", "Nhan Vien");
+            Assert.AreEqual(5, daTs.Rows.Count);
 
         }
         [TestMethod]
@@ -224,7 +246,43 @@ namespace UnitTestProject1
             cn.Sua(daTs.Rows[0], gd);
             Assert.AreEqual("Giam Doc", daTs.Rows[0][4]);
         }
+        [TestMethod]
+        public void TestXoa_DongDau()
+        {
+            SetUp();
+            DataTable daTs = ds.Tables[0];
+            
+            cn.Them(daTs, "123", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");  
+            cn.Del(0, daTs);
+            Assert.AreEqual(0, daTs.Rows.Count);
+        }
+        [TestMethod]
+        public void TestXoa_DongBatKy()
+        {
+            SetUp();
+            DataTable daTs = ds.Tables[0];
+            Assert.AreEqual(0, daTs.Rows.Count);
+            cn.Them(daTs, "1234178", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123421", "Nguyen Van B", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123452", "Nguyen Van C", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "12345634", "Nguyen Van D", "31 NK", "0123465789", "Nhan Vien");
+            cn.Del(2, daTs);
+            Assert.AreEqual(3, daTs.Rows.Count);
+        }
+        [TestMethod]
+        public void TestXoa_DongCuoiCung()
+        {
+            SetUp();
+            DataTable daTs = ds.Tables[0];
+            cn.Them(daTs, "1234178", "Nguyen Van A", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123421", "Nguyen Van B", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "123452", "Nguyen Van C", "31 NK", "0123465789", "Nhan Vien");
+            cn.Them(daTs, "12345634", "Nguyen Van D", "31 NK", "0123465789", "Nhan Vien");
+            cn.Del(3, daTs);
+            Assert.AreEqual(3, daTs.Rows.Count);
 
+        }
+        
       
     }
 }

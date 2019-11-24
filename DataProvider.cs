@@ -35,21 +35,7 @@ namespace DemoQLNhanVien_BTL_
         {
             cnn.Close();
         }
-        public string GetMD5(string chuoi)
-        {
-            string str_md5 = "";
-            byte[] mang = System.Text.Encoding.UTF8.GetBytes(chuoi);
-
-            MD5CryptoServiceProvider my_md5 = new MD5CryptoServiceProvider();
-            mang = my_md5.ComputeHash(mang);
-
-            foreach (byte b in mang)
-            {
-                str_md5 += b.ToString("X2");
-            }
-
-            return str_md5;
-        }
+   
         public string type = null;
         public bool Login(string UserName, string Password)
         {
@@ -57,10 +43,9 @@ namespace DemoQLNhanVien_BTL_
             {
                 return false;
             }
-          
-            string userName = GetMD5(UserName);
-            string password = GetMD5(Password);
 
+            string userName = UserName;
+            string password = Password; 
             Connection();
 
             string sql = "SELECT Type FROM Users WHERE Username = '" + userName + "' AND Password = '" + password + "'";
@@ -69,7 +54,7 @@ namespace DemoQLNhanVien_BTL_
             cmd.Connection = cnn;
             cmd.CommandText = sql;
             cmd.CommandType = CommandType.Text;
-           // if(cmd.ExecuteScalar().ToString() != null)
+        
            
                  type = (string)cmd.ExecuteScalar();
            
