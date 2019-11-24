@@ -51,7 +51,7 @@
             this.txtPass.PasswordChar = '*';
             this.txtPass.Size = new System.Drawing.Size(100, 20);
             this.txtPass.TabIndex = 0;
-            this.txtPass.Text = "GiamDoc";
+            this.txtPass.Text = "admin@123";
             // 
             // label1
             // 

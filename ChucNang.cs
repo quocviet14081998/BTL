@@ -30,7 +30,7 @@ namespace DemoQLNhanVien_BTL_
         }
         public void Them (DataTable daT, string id , string name , string phone , string address , string position )
         {
-            if (id == "" || name == "" || phone == "" || address == "" || position == "")
+            if (id == " " || name == " " || phone == " " || address == " " || position == " ")
             {
                 MessageBox.Show("Không có dữ liệu", "Cảnh Báo");
             }
